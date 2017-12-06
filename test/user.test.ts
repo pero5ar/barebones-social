@@ -29,6 +29,7 @@ describe("POST /api/users", () => {
       })
       .catch(err => {
         console.log("error 1");
+        throw err;
       });
   });
 });
