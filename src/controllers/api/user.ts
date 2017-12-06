@@ -31,7 +31,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
     if (!user) {
       return res.status(404).send(info.message);
     }
-    res.status(200).send(JSON.stringify(user));
+    res.status(200).json(user);
   })(req, res, next);
 };
 
@@ -65,11 +65,11 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
       return res.sendStatus(500);
     }
     if (existingUser) {
-      return res.status(400).send("Account with that email address already exists.");
+      return res.status(400).type("text/plain").send("Account with that email address already exists.");
     }
     user.save((err: WriteError) => {
       if (err) {
-        return res.status(500).send(err.errmsg);
+        return res.status(500).type("text/plain").send(err.errmsg);
       }
       res.sendStatus(201);
     });
@@ -89,7 +89,6 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
   const errors = req.validationErrors();
 
   if (errors) {
-    console.log(JSON.stringify(errors));
     return res.sendStatus(400);
   }
 
@@ -114,7 +113,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 
       existingUser.save((err: WriteError) => {
         if (err) {
-          return res.status(500).send(err.errmsg);
+          return res.status(500).type("text/plain").send(err.errmsg);
         }
         res.sendStatus(200);
       });
@@ -122,7 +121,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
     }
     user.save((err: WriteError) => {
       if (err) {
-        return res.status(500).send(err.errmsg);
+        return res.status(500).type("text/plain").send(err.errmsg);
       }
       res.sendStatus(201);
     });
@@ -144,7 +143,7 @@ export const findByEmail = (req: Request, res: Response, next: NextFunction) => 
     if (!user) {
       res.sendStatus(404);
     }
-    res.status(200).send(JSON.stringify(user));
+    res.status(200).json(user);
   });
 };
 
